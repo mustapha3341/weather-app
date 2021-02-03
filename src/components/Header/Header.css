@@ -1,0 +1,44 @@
+.header {
+    background: green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: url("../../pexels-pixabay-461940.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-blend-mode: multiply;
+    color: whitesmoke;
+    position: relative;
+    user-select: none;
+}
+
+.header::before {
+    content: "";
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    /* z-index: -1; */
+}
+
+.weather--info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5em;
+    z-index: 2;
+}
+
+.temperature {
+    font-size: 8rem;
+    line-height: 1.1;
+    z-index: 2;
+}
+
+.location {
+    font-size: 1.5rem;
+    z-index: 2;
+    opacity: .7;
+}
