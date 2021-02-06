@@ -1,33 +1,35 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 import { Header, WeatherCards } from "./components";
 
 function App() {
     const [data, setData] = useState(null);
-    const [latitude, setLatitude] = useState(0);
-    const [longitude, setLongitude] = useState(0);
 
+    const fetchData = () => {
+        window.navigator.geolocation.getCurrentPosition(async (position) => {
+            try {
+                if (!position) throw new Error("Error processing request.");
+                const { longitude, latitude } = position.coords;
 
-    window.navigator.geolocation.getCurrentPosition((position) => {
-        if(position) {
-            const { longitude, latitude } = position.coords;
-            setLatitude(latitude);
-            setLongitude(longitude);
-        }
-    });
+                const proxy = `https://cors-anywhere.herokuapp.com/`;
+                const url = `https://api.darksky.net/forecast/ac80f0b7f7195c33fef1aa2be4cc6edf`;
 
-    const fetchData = useCallback( async () => {
-        const proxy = `https://cors-anywhere.herokuapp.com/`;
-        const url = `${proxy}https://api.darksky.net/forecast/3a1e7ea23d3340d9e6f2b4672843a1ec`;
+                const response = await axios.get(
+                    `${url}/${latitude},${longitude}`
+                );
 
-        const response = await axios.get(`${url}/${latitude},${longitude}`);
-        console.log(response.data);
-    }, [latitude, longitude]);
+                if (!response) throw new Error("Error processing request");
+                console.log(response.data);
+            } catch (error) {
+                console.error(error.message);
+            }
+        });
+    };
 
     useEffect(() => {
         fetchData();
-    }, [fetchData]);
+    }, []);
 
     return (
         <div className="App">
